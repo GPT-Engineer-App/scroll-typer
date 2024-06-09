@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { FaPlus } from "react-icons/fa";
+import { FaRedo } from "react-icons/fa";
 
 const Index = () => {
   const canvasRef = useRef(null);
@@ -10,6 +10,10 @@ const Index = () => {
   const [score, setScore] = useState(0);
 
   const wordsPool = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape", "honeydew"];
+
+  const handleRestart = () => {
+    window.location.reload();
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -52,8 +56,8 @@ const Index = () => {
     const interval = setInterval(() => {
       const newWord = {
         text: wordsPool[Math.floor(Math.random() * wordsPool.length)],
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight
+        x: Math.random() * (window.innerWidth - 100),
+        y: Math.random() * (window.innerHeight - 100)
       };
       setWords(prevWords => [...prevWords, newWord]);
     }, 3000);
@@ -81,8 +85,14 @@ const Index = () => {
 
   return (
     <div className="relative w-full h-full">
+      <nav className="bg-blue-500 p-4 flex justify-between items-center">
+        <h1 className="text-white text-2xl">Typing Challenge Game</h1>
+        <button onClick={handleRestart} className="text-white flex items-center">
+          <FaRedo className="mr-2" /> Restart
+        </button>
+      </nav>
       <canvas ref={canvasRef} className="absolute top-0 left-0"></canvas>
-      <div className="absolute top-4 right-4 text-2xl font-bold">Score: {score}</div>
+      <div className="absolute top-16 right-4 text-2xl font-bold">Score: {score}</div>
       {currentWord && (
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
           <input
